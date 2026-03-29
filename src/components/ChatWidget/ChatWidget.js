@@ -1,3 +1,4 @@
+// src/components/ChatWidget/ChatWidget.js
 import React, { useState, useEffect, useRef } from "react";
 import { db } from "../../firebase"; // a firebase.js helye
 import {
@@ -17,7 +18,7 @@ function ChatWidget() {
   const [input, setInput] = useState("");
   const messagesEndRef = useRef(null);
 
-  // Scroll aljára
+  // Scroll a chat aljára
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -26,7 +27,7 @@ function ChatWidget() {
     scrollToBottom();
   }, [messages]);
 
-  // Firestore real-time listener
+  // Valós idejű listener a Firestore üzenetekhez
   useEffect(() => {
     if (!nameSubmitted) return;
 
@@ -43,6 +44,21 @@ function ChatWidget() {
     return () => unsubscribe();
   }, [nameSubmitted]);
 
+  // Automatikus üdvözlő üzenet a Firestore-ba
+  useEffect(() => {
+    if (nameSubmitted) {
+      const sendWelcomeMessage = async () => {
+        await addDoc(collection(db, "messages"), {
+          name: "Admin",
+          text: `Willkommen im Online-Chat, ${name}! Der Administrator wird sich in Kürze bei dir melden.`,
+          createdAt: new Date()
+        });
+      };
+      sendWelcomeMessage();
+    }
+  }, [nameSubmitted, name]);
+
+  // Üzenet küldése Firestore-ba
   const handleSend = async (e) => {
     e.preventDefault();
     if (!input.trim()) return;
@@ -53,15 +69,17 @@ function ChatWidget() {
       createdAt: new Date()
     });
 
-    setInput("");
+    setInput(""); // Input mező törlése
   };
 
   return (
     <>
+      {/* Chat ikon */}
       <div className="chat-icon" onClick={() => setOpen(prev => !prev)}>
         💬
       </div>
 
+      {/* Chat ablak */}
       {open && (
         <div className="chat-box">
           {!nameSubmitted ? (
@@ -80,11 +98,15 @@ function ChatWidget() {
           ) : (
             <div className="chat-messages">
               {messages.map((msg, i) => (
-                <div key={i} className={`message ${msg.name === name ? "user" : "admin"}`}>
+                <div
+                  key={i}
+                  className={`message ${msg.name === name ? "user" : "admin"}`}
+                >
                   <strong>{msg.name}: </strong>{msg.text}
                 </div>
               ))}
               <div ref={messagesEndRef}></div>
+
               <form onSubmit={handleSend} className="chat-input-form">
                 <input
                   type="text"
