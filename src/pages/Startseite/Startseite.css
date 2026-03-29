@@ -1,0 +1,69 @@
+@import url("https://fonts.googleapis.com/css2?family=Diplomata&display=swap");
+.startseite {
+  margin-top: 80px; /* navbar alá tolás */
+}
+
+.hero {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.hero-img {
+  width: 100%;
+  height: 85%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* finom világos fátyol */
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.4); /* világos, 20%-os átlátszóság */
+  z-index: 1;
+}
+
+.hero-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #000; /* sötét szöveg a világos fátyolhoz */
+  text-align: center;
+  z-index: 2;
+}
+
+.hero-text h1 {
+  font-family: "diplomata", cursive;
+  font-size: 48px;
+  margin-bottom: 1arem;
+}
+
+.hero-text p {
+  font-size: 20px;
+  margin-bottom: 2rem;
+}
+
+/* gomb stílus */
+.hero-button {
+  padding: 12px 30px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #fff;
+  background: #ff4081;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.hero-button:hover {
+  background: #e73370;
+}

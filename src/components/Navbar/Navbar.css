@@ -1,0 +1,141 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "IBM Plex Sans", sans-serif;
+}
+
+/* NAVBAR */
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: #000;
+  z-index: 1000;
+  padding: 30px 40px;
+  display: flex;
+  justify-content: flex-end; /* Menü jobbra */
+  align-items: center;
+}
+
+/* GARDROBE felirat - bal felső sarok */
+.text {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1001;
+  width: 330px;
+  height: 60px; /* kisebb, hogy illeszkedjen navbarhoz */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #ff1ead; /* pink keret */
+  border-radius: 5px;
+  padding-bottom: 10px;
+}
+
+.text:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0%;
+  background-color: #ff1ead; /* pink overlay */
+  z-index: -1;
+  transition: all 1s 0.6s ease-in-out;
+}
+
+.text:hover::before {
+  height: 100%;
+}
+
+.text:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0%;
+  background-color: white;
+  z-index: -2;
+  transition: all 1s 0.4s ease-in-out;
+}
+
+.text:hover::after {
+  height: 100%;
+}
+
+.text h1 {
+  margin-top: 10px;
+  padding: 0;
+  font-size: 40px; /* kisebb méret navbarhoz */
+  font-weight: 700;
+  cursor: default;
+  -webkit-text-stroke: 2px white;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  background-image: linear-gradient(transparent 50%, white 50%);
+  background-size: 100% 200%;
+  background-position: top;
+  transition: all 0.8s ease-in-out;
+}
+
+.text:hover h1 {
+  background-position: bottom;
+}
+
+/* MENÜ JOBBRA */
+.nav-list {
+  display: flex;
+  list-style: none;
+  gap: 2rem;
+}
+
+.nav-list li a {
+  position: relative;
+  font-size: 25px;
+  font-weight: 700;
+  font-family: "IBM Plex Sans", sans-serif;
+  text-decoration: none;
+  color: white;
+  -webkit-text-stroke: 1px white; /* 3D vonalhatás */
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  background-image: linear-gradient(transparent 50%, #0ef 50%);
+  background-size: 100% 200%;
+  background-position: top;
+  transition: all 0.6s ease-in-out;
+  cursor: pointer;
+}
+
+.nav-list li a:hover {
+  background-position: bottom; /* animált 3D hatás hoverkor */
+}
+.nav-list li a span {
+  position: absolute;
+  top: 0;
+  left: -5px;
+  width: 110%;
+  height: 130%;
+  z-index: -1;
+  border-bottom: 2px solid #0ef;
+  border-radius: 15px;
+  transform: scale(0) translateY(50px);
+  opacity: 0;
+  transition: 0.5s;
+}
+
+.nav-list li a:hover span {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+}
+
+.auth-icons {
+  display: flex;
+  gap: 1rem;
+}

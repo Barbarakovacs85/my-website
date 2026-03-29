@@ -1,24 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Startseite from './pages/Startseite';
+import Galerie from './pages/Galerie';
+import ÜberUns from './pages/UberUns';
+import Produkte from './pages/Produkte';
+import Kontakt from './pages/Kontakt';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      {/* Navbar mindig látszik */}
+      <Navbar />
+
+      {/* Oldalak */}
+      <Routes>
+        <Route path="/" element={<Startseite />} />
+        <Route path="/Galerie" element={<Galerie />} />
+        <Route path="/über-uns" element={<ÜberUns />} />
+        <Route path="/produkte" element={<Produkte />} />
+        <Route path="/kontakt" element={<Kontakt />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
