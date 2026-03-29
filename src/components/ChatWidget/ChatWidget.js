@@ -1,8 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
-// Hang importálása a mp3 mappából
-import bellSound from "./mp3/chat.mp3"; 
-// CSS importálása ugyanabból a mappából
-import "./ChatWidget.css"; 
+import { db } from "../../firebase"; // a firebase.js helye
+import {
+  collection,
+  addDoc,
+  query,
+  orderBy,
+  onSnapshot
+} from "firebase/firestore";
+import "./ChatWidget.css";
 
 function ChatWidget() {
   const [open, setOpen] = useState(false);
@@ -12,7 +17,7 @@ function ChatWidget() {
   const [input, setInput] = useState("");
   const messagesEndRef = useRef(null);
 
-  // Scroll a chat aljára
+  // Scroll aljára
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -21,45 +26,42 @@ function ChatWidget() {
     scrollToBottom();
   }, [messages]);
 
-  // Automatikus üdvözlő üzenet
+  // Firestore real-time listener
   useEffect(() => {
-    if (nameSubmitted) {
-      setMessages([
-        {
-          sender: "admin",
-          text: `Willkommen im Online-Chat, ${name}! Der Administrator wird sich in Kürze bei dir melden.`,
-        },
-      ]);
-    }
-  }, [nameSubmitted, name]);
+    if (!nameSubmitted) return;
 
-  // Hangjelzés új üzenetnél
-  useEffect(() => {
-    if (messages.length > 1) {
-      const audio = new Audio(bellSound);
-      audio.play();
-    }
-  }, [messages]);
+    const q = query(
+      collection(db, "messages"),
+      orderBy("createdAt", "asc")
+    );
 
-  const handleSend = (e) => {
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const msgs = snapshot.docs.map(doc => doc.data());
+      setMessages(msgs);
+    });
+
+    return () => unsubscribe();
+  }, [nameSubmitted]);
+
+  const handleSend = async (e) => {
     e.preventDefault();
     if (!input.trim()) return;
-    setMessages([...messages, { sender: "user", text: input }]);
+
+    await addDoc(collection(db, "messages"), {
+      name,
+      text: input,
+      createdAt: new Date()
+    });
+
     setInput("");
   };
 
   return (
     <>
-      {/* Chat ikon */}
-      <div
-        className="chat-icon"
-        onClick={() => setOpen((prev) => !prev)}
-        title="Chat mit uns"
-      >
+      <div className="chat-icon" onClick={() => setOpen(prev => !prev)}>
         💬
       </div>
 
-      {/* Chat ablak */}
       {open && (
         <div className="chat-box">
           {!nameSubmitted ? (
@@ -69,24 +71,17 @@ function ChatWidget() {
                 type="text"
                 placeholder="Dein Name"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={e => setName(e.target.value)}
               />
-              <button
-                onClick={() => {
-                  if (name.trim()) setNameSubmitted(true);
-                }}
-              >
+              <button onClick={() => { if (name.trim()) setNameSubmitted(true); }}>
                 Starten
               </button>
             </div>
           ) : (
             <div className="chat-messages">
               {messages.map((msg, i) => (
-                <div
-                  key={i}
-                  className={`message ${msg.sender === "admin" ? "admin" : "user"}`}
-                >
-                  {msg.text}
+                <div key={i} className={`message ${msg.name === name ? "user" : "admin"}`}>
+                  <strong>{msg.name}: </strong>{msg.text}
                 </div>
               ))}
               <div ref={messagesEndRef}></div>
@@ -95,7 +90,7 @@ function ChatWidget() {
                   type="text"
                   placeholder="Schreibe eine Nachricht..."
                   value={input}
-                  onChange={(e) => setInput(e.target.value)}
+                  onChange={e => setInput(e.target.value)}
                 />
                 <button type="submit">Senden</button>
               </form>
