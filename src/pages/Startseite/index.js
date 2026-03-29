@@ -1,6 +1,8 @@
-import React from 'react';
-import bild from './img/bild.png';
-import './Startseite.css';
+import React from "react";
+import { Link } from "react-router-dom";
+import ChatWidget from "../../components/ChatWidget/ChatWidget"; // FIGYELEM: ../../
+import bild from "./img/bild.png";
+import "./Startseite.css";
 
 function Startseite() {
   return (
@@ -8,12 +10,21 @@ function Startseite() {
       <div className="hero">
         <img src={bild} alt="hero" className="hero-img" />
         <div className="overlay"></div>
+
         <div className="hero-text">
           <h1>Willkommen bei Gardrobe</h1>
-          <p>Secondhand & Stil</p>
-          <button className="hero-button">Mehr erfahren</button>
+          <p>Kreative workshop & Kinder Secondhand</p>
+
+          <Link to="/produkte" className="hero-3d-button">
+            <span>Galerie</span>
+            <span></span>
+            <span>Galerie</span>
+            <span></span>
+          </Link>
         </div>
       </div>
+
+      <ChatWidget />
     </div>
   );
 }

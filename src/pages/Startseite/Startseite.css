@@ -1,4 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Diplomata&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Festive&display=swap");
+
 .startseite {
   margin-top: 80px; /* navbar alá tolás */
 }
@@ -47,23 +49,66 @@
 }
 
 .hero-text p {
-  font-size: 20px;
+  font-family: "festive", cursive;
+  font-size: 85px;
   margin-bottom: 2rem;
 }
 
 /* gomb stílus */
-.hero-button {
-  padding: 12px 30px;
-  font-size: 18px;
-  font-weight: bold;
-  color: #fff;
-  background: #ff4081;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background 0.3s;
+/* 3D gomb a hero alatt */
+.hero-3d-button {
+  position: relative;
+  width: 500px;
+  height: 70px;
+  display: inline-block;
+  margin-top: 2rem;
+  transition: 4s;
+  transform-style: preserve-3d;
+  transform: perspective(1000px) rotateX(0deg);
+  text-decoration: none;
+  z-index: 2;
 }
 
-.hero-button:hover {
-  background: #e73370;
+.hero-3d-button:hover {
+  transform: perspective(1000px) rotateX(360deg);
+}
+
+.hero-3d-button span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  background: rgba(255, 64, 129, 0.9); /* a hero-button színéhez illeszkedő */
+  font-family: "Diplomata", cursive;
+  text-transform: uppercase;
+  font-size: 35px;
+  letter-spacing: 1px;
+  border: 2px solid #ff4081;
+  box-sizing: border-box;
+  box-shadow: inset 0 10px 20px rgba(0, 0, 0, 0.2);
+  transition: 0.5s;
+}
+
+.hero-3d-button:hover span {
+  color: #000;
+  background: #0ef;
+  border: 2px solid #4040ff;
+}
+
+.hero-3d-button span:nth-child(1) {
+  transform: rotateX(360deg) translateZ(45px);
+}
+.hero-3d-button span:nth-child(2) {
+  transform: rotateX(270deg) translateZ(45px);
+}
+.hero-3d-button span:nth-child(3) {
+  transform: rotateX(180deg) translateZ(45px);
+}
+.hero-3d-button span:nth-child(4) {
+  transform: rotateX(90deg) translateZ(45px);
 }
