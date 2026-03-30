@@ -1,107 +1,61 @@
-.chat-icon {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: linear-gradient(135deg, #0ef, #ff4081);
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  font-size: 28px;
-  color: white;
-  box-shadow: 0 0 15px #0ef;
-  z-index: 1000;
-}
-
-.chat-box {
-  position: fixed;
-  bottom: 90px;
-  right: 20px;
-  width: 350px;
-  max-height: 500px;
-  background: #111;
-  color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 0 20px #0ef;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  z-index: 1000;
-}
-
-.chat-name-form {
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-}
-
-.chat-name-form input {
-  padding: 10px;
-  margin: 10px 0;
+.chat-container {
+  width: 400px;
+  margin: 20px auto;
+  background: #f1f1f1;
   border-radius: 5px;
-  border: none;
-  outline: none;
-}
-
-.chat-name-form button {
   padding: 10px;
-  background: #0ef;
-  border: none;
-  border-radius: 5px;
-  color: #000;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.chat-messages {
-  flex: 1;
   display: flex;
   flex-direction: column;
-  padding: 10px;
+  height: 500px;
+}
+
+.chat {
+  list-style: none;
+  padding: 0;
+  margin: 0;
   overflow-y: auto;
-}
-
-.message {
-  margin: 5px 0;
-  padding: 8px 12px;
-  border-radius: 15px;
-  max-width: 80%;
-}
-
-.message.admin {
-  background: #0ef;
-  color: #000;
-  align-self: flex-start;
-}
-
-.message.user {
-  background: #ff4081;
-  color: #fff;
-  align-self: flex-end;
-}
-
-.chat-input-form {
-  display: flex;
-  border-top: 1px solid #555;
-}
-
-.chat-input-form input {
   flex: 1;
-  padding: 10px;
-  border: none;
-  outline: none;
-  background: #222;
-  color: #fff;
 }
 
-.chat-input-form button {
-  padding: 10px 15px;
+.chat li {
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 10px;
+}
+
+.chat li.left {
+  justify-content: flex-start;
+}
+
+.chat li.right {
+  justify-content: flex-end;
+  flex-direction: row-reverse;
+}
+
+.chat li img.logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin: 0 10px;
+}
+
+.chat li p {
+  background: #6fbced;
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+  max-width: 60%;
+  margin: 0;
+}
+
+.chat li.left p {
+  background: #58b666;
+}
+
+.text_input {
   border: none;
-  background: #0ef;
-  color: #000;
-  font-weight: bold;
-  cursor: pointer;
+  padding: 10px;
+  border-radius: 5px;
+  width: 100%;
+  box-sizing: border-box;
 }
