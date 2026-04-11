@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./ChatWidget.css";
 
-import { app } from "./firebase";
+import { app } from "../../firebase";
 import {
   getFirestore,
   collection,
