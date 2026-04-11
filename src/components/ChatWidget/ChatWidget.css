@@ -1,61 +1,172 @@
-.chat-container {
-  width: 400px;
-  margin: 20px auto;
-  background: #f1f1f1;
-  border-radius: 5px;
-  padding: 10px;
+* {
+  box-sizing: border-box;
+}
+
+/* 💬 Chat ikon */
+.chat-icon {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: linear-gradient(135deg, #0ef, #ff4081);
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 28px;
+  color: white;
+  box-shadow: 0 0 15px #0ef;
+  z-index: 1000;
+  transition: 0.3s;
+}
+
+.chat-icon:hover {
+  transform: scale(1.1);
+}
+
+/* 💻 Chat ablak */
+.chat-box {
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  width: 350px;
+  height: 500px;
+  background: #111;
+  color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
   display: flex;
   flex-direction: column;
-  height: 500px;
+  overflow: hidden;
+  z-index: 1000;
 }
 
-.chat {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  overflow-y: auto;
-  flex: 1;
-}
-
-.chat li {
+/* 👤 Név bekérés */
+.chat-name-form {
   display: flex;
-  align-items: flex-end;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.chat-name-form h3 {
   margin-bottom: 10px;
 }
 
-.chat li.left {
-  justify-content: flex-start;
-}
-
-.chat li.right {
-  justify-content: flex-end;
-  flex-direction: row-reverse;
-}
-
-.chat li img.logo {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  margin: 0 10px;
-}
-
-.chat li p {
-  background: #6fbced;
-  color: white;
-  padding: 10px;
-  border-radius: 10px;
-  max-width: 60%;
-  margin: 0;
-}
-
-.chat li.left p {
-  background: #58b666;
-}
-
-.text_input {
+.chat-name-form input {
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 8px;
   border: none;
+  outline: none;
+}
+
+.chat-name-form button {
+  padding: 12px;
+  background: #0ef;
+  border: none;
+  border-radius: 8px;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.chat-name-form button:hover {
+  background: #00c8d7;
+}
+
+/* 💬 Üzenetek */
+.chat-messages {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   padding: 10px;
+  overflow-y: auto;
+}
+
+/* buborék */
+.message {
+  margin: 6px 0;
+  padding: 10px 14px;
+  border-radius: 18px;
+  max-width: 75%;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* admin bal oldal */
+.message.admin {
+  background: #0ef;
+  color: #000;
+  align-self: flex-start;
+  border-bottom-left-radius: 4px;
+}
+
+/* user jobb oldal */
+.message.user {
+  background: #ff4081;
+  color: #fff;
+  align-self: flex-end;
+  border-bottom-right-radius: 4px;
+}
+
+/* 📝 input rész */
+.chat-input-form {
+  display: flex;
+  border-top: 1px solid #333;
+}
+
+.chat-input-form input {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  outline: none;
+  background: #222;
+  color: #fff;
+}
+
+.chat-input-form input::placeholder {
+  color: #aaa;
+}
+
+.chat-input-form button {
+  padding: 12px 16px;
+  border: none;
+  background: #0ef;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.chat-input-form button:hover {
+  background: #00c8d7;
+}
+
+/* scrollbar (szebb) */
+.chat-messages::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+  background: #555;
+  border-radius: 3px;
+}
+.inactive-prompt {
+  display: flex;
+  justify-content: center;
+  margin: 10px 0;
+  gap: 10px;
+}
+
+.inactive-prompt button {
+  padding: 8px 12px;
   border-radius: 5px;
-  width: 100%;
-  box-sizing: border-box;
+  border: none;
+  cursor: pointer;
+  background: #0ef;
+  color: #000;
+  font-weight: bold;
 }

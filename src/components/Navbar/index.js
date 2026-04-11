@@ -37,14 +37,6 @@ function Navbar() {
             Kontakt<span></span>
           </Link>
         </li>
-        <li className="auth-icons">
-          <Link to="/registrierung">
-            Registrierung<span></span>
-          </Link>
-          <Link to="/login">
-            Login<span></span>
-          </Link>
-        </li>
       </ul>
     </nav>
   );
