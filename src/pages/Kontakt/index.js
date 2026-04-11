@@ -27,7 +27,7 @@ function Kontakt() {
     setSuccess(false);
 
     try {
-      const res = await fetch("http://localhost:3001/contact", {
+      const res = await fetch("/.netlify/functions/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form)
@@ -50,7 +50,6 @@ function Kontakt() {
   return (
     <div className="closet">
 
-      {/* 🚪 DOOR (ONLY UNTIL OPEN) */}
       {!open && (
         <div className="doors" onClick={() => setOpen(true)}>
           <div className="door left-door">
@@ -62,13 +61,10 @@ function Kontakt() {
         </div>
       )}
 
-      {/* 🧠 INSIDE */}
       {open && (
         <div className="inside">
 
-          {/* LEFT */}
           <div className="panel left">
-
             <div className="hanger">
               <div className="hanger-line"></div>
 
@@ -92,10 +88,8 @@ function Kontakt() {
               <p>Sa: 07:00–17:00</p>
               <p>So: geschlossen</p>
             </div>
-
           </div>
 
-          {/* CENTER */}
           <div className="panel center">
             <form onSubmit={handleSubmit}>
               <h2>Nachricht senden</h2>
@@ -134,7 +128,6 @@ function Kontakt() {
             </form>
           </div>
 
-          {/* RIGHT */}
           <div className="panel right">
             <iframe
               title="map"
