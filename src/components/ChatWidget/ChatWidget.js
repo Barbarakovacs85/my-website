@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import "./ChatWidget.css";
 
 function ChatWidget() {
@@ -12,7 +12,7 @@ function ChatWidget() {
   const messagesEndRef = useRef(null);
 
   const inactivityTime = 60000; // 1 perc
-  let inactivityTimer = useRef(null);
+  const inactivityTimer = useRef(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -22,20 +22,29 @@ function ChatWidget() {
     scrollToBottom();
   }, [messages]);
 
-  useEffect(() => {
-    if (!chatClosed) resetInactivityTimer();
-    return () => clearTimeout(inactivityTimer.current);
-  }, [messages, chatClosed]);
+  // ✅ FIX: useCallback + stabil függvény
+  const resetInactivityTimer = useCallback(() => {
+    if (inactivityTimer.current) {
+      clearTimeout(inactivityTimer.current);
+    }
 
-  const resetInactivityTimer = () => {
-    clearTimeout(inactivityTimer.current);
     inactivityTimer.current = setTimeout(() => {
       if (!chatClosed) {
         setInactivePrompt(true);
         addMessage("admin", "Kann ich Ihnen noch weiterhelfen?");
       }
     }, inactivityTime);
-  };
+  }, [chatClosed]);
+
+  useEffect(() => {
+    if (!chatClosed) resetInactivityTimer();
+
+    return () => {
+      if (inactivityTimer.current) {
+        clearTimeout(inactivityTimer.current);
+      }
+    };
+  }, [messages, chatClosed, resetInactivityTimer]);
 
   const addMessage = (sender, text) => {
     setMessages(prev => [...prev, { sender, text }]);
@@ -45,7 +54,6 @@ function ChatWidget() {
   useEffect(() => {
     if (nameSubmitted) {
       addMessage("admin", `Willkommen im Online-Chat, ${name}!`);
-      // rögtön felteszi a kérdést
       setTimeout(() => addMessage("admin", "Kann ich Ihnen helfen?"), 500);
       setInactivePrompt(true);
     }
@@ -69,7 +77,7 @@ function ChatWidget() {
     } else {
       addMessage("admin", "Alles klar, danke für das Gespräch! Auf Wiedersehen!");
       setInactivePrompt(false);
-      setChatClosed(true); // beszélgetés lezárva
+      setChatClosed(true);
     }
   };
 

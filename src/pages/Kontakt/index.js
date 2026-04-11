@@ -1,15 +1,17 @@
 import React, { useState } from "react";
 import "./Kontakt.css";
 
-function Contact() {
+function Kontakt() {
+  const [open, setOpen] = useState(false);
+
   const [form, setForm] = useState({
     name: "",
     email: "",
     message: ""
   });
 
-  const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const handleChange = (e) => {
     setForm({
@@ -39,82 +41,112 @@ function Contact() {
       setForm({ name: "", email: "", message: "" });
 
     } catch (err) {
-      alert(err.message);
+      alert("Hiba: " + err.message);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <section className="contact">
-      <div className="contact-wrapper">
+    <div className="closet">
 
-        {/* LEFT */}
-        <div className="contact-left">
+      {/* 🚪 DOOR (ONLY UNTIL OPEN) */}
+      {!open && (
+        <div className="doors" onClick={() => setOpen(true)}>
+          <div className="door left-door">
+            <span>Öffnen</span>
+          </div>
+          <div className="door right-door">
+            <span>Öffnen</span>
+          </div>
+        </div>
+      )}
 
-          <h2>Contact Us</h2>
+      {/* 🧠 INSIDE */}
+      {open && (
+        <div className="inside">
 
-          <p className="contact-desc">
-            Write us a message and we will reply soon.
-          </p>
+          {/* LEFT */}
+          <div className="panel left">
 
-          <div className="info">
-            <p>📍 9443 Widnau, Poststrasse 5</p>
-            <p>📞 +41 xxx xxx xxx</p>
-            <p>✉ info@email.com</p>
+            <div className="hanger">
+              <div className="hanger-line"></div>
+
+              <div className="icons">
+                <i className="fa-brands fa-facebook-f"></i>
+                <i className="fa-brands fa-whatsapp"></i>
+                <i className="fa-brands fa-tiktok"></i>
+                <i className="fa-brands fa-instagram"></i>
+              </div>
+            </div>
+
+            <div className="contact-info">
+              <h2>Gardrobe Widnau</h2>
+              <p>📍 Poststrasse 5<br />9443 Widnau</p>
+              <p>📞 +41 78 700 4340</p>
+            </div>
+
+            <div className="opening">
+              <h3>Öffnungszeiten</h3>
+              <p>Mo–Fr: 07:00–11:30 / 13:30–19:00</p>
+              <p>Sa: 07:00–17:00</p>
+              <p>So: geschlossen</p>
+            </div>
+
           </div>
 
-          {/* FORM */}
-          <form onSubmit={handleSubmit} className="form">
+          {/* CENTER */}
+          <div className="panel center">
+            <form onSubmit={handleSubmit}>
+              <h2>Nachricht senden</h2>
 
-            <input
-              name="name"
-              placeholder="Full Name"
-              value={form.name}
-              onChange={handleChange}
-              required
+              <input
+                name="name"
+                placeholder="Name"
+                value={form.name}
+                onChange={handleChange}
+                required
+              />
+
+              <input
+                name="email"
+                placeholder="Email"
+                value={form.email}
+                onChange={handleChange}
+                required
+              />
+
+              <textarea
+                name="message"
+                placeholder="Nachricht..."
+                value={form.message}
+                onChange={handleChange}
+                required
+              />
+
+              <button type="submit" disabled={loading}>
+                {loading ? "Senden..." : "Senden"}
+              </button>
+
+              {success && (
+                <p className="success">Nachricht gesendet ✅</p>
+              )}
+            </form>
+          </div>
+
+          {/* RIGHT */}
+          <div className="panel right">
+            <iframe
+              title="map"
+              src="https://www.google.com/maps?q=Poststrasse%205%2C%209443%20Widnau&output=embed"
             />
+          </div>
 
-            <input
-              name="email"
-              placeholder="Email"
-              value={form.email}
-              onChange={handleChange}
-              required
-            />
-
-            <textarea
-              name="message"
-              placeholder="Message..."
-              value={form.message}
-              onChange={handleChange}
-              required
-            />
-
-            <button
-              className="hero-3d-button"
-              type="submit"
-              disabled={loading}
-            >
-              <span>{loading ? "Sending..." : "Send Message"}</span>
-            </button>
-
-            {success && <p className="success">Message sent ✅</p>}
-          </form>
         </div>
+      )}
 
-        {/* RIGHT - MAP */}
-        <div className="contact-right">
-          <iframe
-            title="map"
-            src="https://www.google.com/maps?q=Poststrasse%205%2C%209443%20Widnau&output=embed"
-            loading="lazy"
-          ></iframe>
-        </div>
-
-      </div>
-    </section>
+    </div>
   );
 }
 
-export default Contact;
+export default Kontakt;
