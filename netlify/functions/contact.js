@@ -4,7 +4,10 @@ exports.handler = async (event) => {
   if (event.httpMethod !== "POST") {
     return {
       statusCode: 405,
-      body: "Only POST allowed",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ error: "Only POST allowed" }),
     };
   }
 
@@ -28,11 +31,17 @@ exports.handler = async (event) => {
 
     return {
       statusCode: 200,
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({ success: true }),
     };
   } catch (err) {
     return {
       statusCode: 500,
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({ error: err.message }),
     };
   }
