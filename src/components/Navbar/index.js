@@ -29,7 +29,7 @@ function Navbar() {
         </li>
         <li>
           <Link to="/produkte">
-            Produkte<span></span>
+            Workshop<span></span>
           </Link>
         </li>
         <li>

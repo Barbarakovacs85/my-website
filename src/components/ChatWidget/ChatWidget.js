@@ -16,12 +16,27 @@ const db = getFirestore(app);
 
 function ChatWidget() {
   const [open, setOpen] = useState(false);
+
+  const [mode, setMode] = useState(null);
   const [name, setName] = useState("");
+  const [userCode, setUserCode] = useState("");
+
   const [nameSubmitted, setNameSubmitted] = useState(false);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
 
   const messagesEndRef = useRef(null);
+
+  // ❌ RESET (X gomb)
+  const handleReset = () => {
+    setOpen(false);
+    setMode(null);
+    setName("");
+    setUserCode("");
+    setNameSubmitted(false);
+    setMessages([]);
+    setInput("");
+  };
 
   // 🔥 realtime listener
   useEffect(() => {
@@ -39,7 +54,7 @@ function ChatWidget() {
     return () => unsubscribe();
   }, []);
 
-  // scroll down
+  // scroll
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
@@ -54,6 +69,8 @@ function ChatWidget() {
       await addDoc(collection(db, "messages"), {
         text: input,
         sender: name,
+        mode: mode,
+        code: userCode || null,
         createdAt: serverTimestamp()
       });
 
@@ -72,8 +89,33 @@ function ChatWidget() {
       {open && (
         <div className="chat-box">
 
-          {/* NAME STEP */}
-          {!nameSubmitted ? (
+          {/* ❌ X */}
+          <button className="close-btn" onClick={handleReset}>
+            ✕
+          </button>
+
+          {/* MODE */}
+          {!mode ? (
+            <div className="chat-name-form">
+              <h3>Wie möchten Sie fortfahren?</h3>
+
+              <div className="mode-buttons">
+                <button onClick={() => setMode("guest")}>
+                  Als Gast
+                </button>
+
+                <button onClick={() => setMode("user")}>
+                  Als Benutzer
+                </button>
+              </div>
+
+              <p className="welcome-text">
+                Herzlich Willkommen bei Garderobe Chat!
+              </p>
+            </div>
+
+          ) : !nameSubmitted ? (
+
             <form
               className="chat-name-form"
               onSubmit={(e) => {
@@ -81,7 +123,11 @@ function ChatWidget() {
                 if (name.trim()) setNameSubmitted(true);
               }}
             >
-              <h3>Bitte geben Sie Ihren Namen ein:</h3>
+              <h3>
+                {mode === "guest"
+                  ? "Bitte geben Sie Ihren Namen ein:"
+                  : "Name und Code eingeben:"}
+              </h3>
 
               <input
                 value={name}
@@ -89,11 +135,33 @@ function ChatWidget() {
                 placeholder="Name"
               />
 
+              {mode === "user" && (
+                <input
+                  value={userCode}
+                  onChange={(e) => setUserCode(e.target.value)}
+                  placeholder="Code"
+                />
+              )}
+
               <button type="submit">Starten</button>
+
+              {/* 🔙 vissza gomb */}
+              <button
+                type="button"
+                className="back-btn"
+                onClick={() => {
+                  setMode(null);
+                  setName("");
+                  setUserCode("");
+                }}
+              >
+                ← Zurück
+              </button>
+
             </form>
+
           ) : (
             <>
-              {/* MESSAGES */}
               <div className="chat-messages">
 
                 {messages.map((msg) => (
@@ -110,7 +178,6 @@ function ChatWidget() {
                 <div ref={messagesEndRef} />
               </div>
 
-              {/* INPUT */}
               <form onSubmit={handleSend} className="chat-input-form">
                 <input
                   value={input}

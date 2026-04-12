@@ -16,9 +16,9 @@ function Startseite() {
           <p>Kreative workshop & Kinder Secondhand</p>
 
           <Link to="/produkte" className="hero-3d-button">
-            <span>Galerie</span>
+            <span>workshop</span>
             <span></span>
-            <span>Galerie</span>
+            <span>workshop</span>
             <span></span>
           </Link>
         </div>

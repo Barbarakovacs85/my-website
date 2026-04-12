@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import "./Kontakt.css";
 
 function Kontakt() {
   const [open, setOpen] = useState(false);
+
+  const location = useLocation();
+  const workshop = new URLSearchParams(location.search).get("workshop");
 
   const [form, setForm] = useState({
     name: "",
@@ -14,11 +18,24 @@ function Kontakt() {
   const [success, setSuccess] = useState(false);
 
   const handleChange = (e) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value
-    });
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
+
+  // 🔥 AUTOMATIKUS WORKSHOP SZÖVEG
+  useEffect(() => {
+    if (workshop) {
+      setForm((prev) => ({
+        ...prev,
+        message: `Sehr geehrte Damen und Herren,
+
+hiermit möchte ich mich für den Workshop "${workshop}" anmelden.
+
+Ich freue mich auf Ihre Rückmeldung.
+
+Mit freundlichen Grüßen`
+      }));
+    }
+  }, [workshop]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,15 +50,13 @@ function Kontakt() {
         body: JSON.stringify(form)
       });
 
-      const data = await res.json();
-
-      if (!res.ok) throw new Error(data.error || "Hiba");
+      if (!res.ok) throw new Error("Hiba");
 
       setSuccess(true);
       setForm({ name: "", email: "", message: "" });
 
     } catch (err) {
-      alert("Hiba: " + err.message);
+      alert(err.message);
     } finally {
       setLoading(false);
     }
@@ -52,12 +67,8 @@ function Kontakt() {
 
       {!open && (
         <div className="doors" onClick={() => setOpen(true)}>
-          <div className="door left-door">
-            <span>Öffnen</span>
-          </div>
-          <div className="door right-door">
-            <span>Öffnen</span>
-          </div>
+          <div className="door left-door"><span>Öffnen</span></div>
+          <div className="door right-door"><span>Öffnen</span></div>
         </div>
       )}
 
@@ -65,34 +76,23 @@ function Kontakt() {
         <div className="inside">
 
           <div className="panel left">
-            <div className="hanger">
-              <div className="hanger-line"></div>
-
-              <div className="icons">
-                <i className="fa-brands fa-facebook-f"></i>
-                <i className="fa-brands fa-whatsapp"></i>
-                <i className="fa-brands fa-tiktok"></i>
-                <i className="fa-brands fa-instagram"></i>
-              </div>
-            </div>
-
             <div className="contact-info">
               <h2>Gardrobe Widnau</h2>
               <p>📍 Poststrasse 5<br />9443 Widnau</p>
               <p>📞 +41 78 700 4340</p>
-            </div>
 
-            <div className="opening">
-              <h3>Öffnungszeiten</h3>
-              <p>Mo–Fr: 07:00–11:30 / 13:30–19:00</p>
-              <p>Sa: 07:00–17:00</p>
-              <p>So: geschlossen</p>
+              {workshop && (
+                <p className="workshop-tag">
+                  🎨 Workshop: <b>{workshop}</b>
+                </p>
+              )}
             </div>
           </div>
 
           <div className="panel center">
+
             <form onSubmit={handleSubmit}>
-              <h2>Nachricht senden</h2>
+              <h2>Workshop Anmeldung</h2>
 
               <input
                 name="name"
@@ -112,7 +112,6 @@ function Kontakt() {
 
               <textarea
                 name="message"
-                placeholder="Nachricht..."
                 value={form.message}
                 onChange={handleChange}
                 required
@@ -125,7 +124,9 @@ function Kontakt() {
               {success && (
                 <p className="success">Nachricht gesendet ✅</p>
               )}
+
             </form>
+
           </div>
 
           <div className="panel right">
