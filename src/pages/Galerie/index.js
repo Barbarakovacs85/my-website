@@ -1,67 +1,131 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Galerie.css";
 
-// 📸 TE KÉPEID (kétpontos fájlnevek!)
-import img1 from "./img/1..jpg";
-import img2 from "./img/2..jpg";
-import img3 from "./img/3..jpg";
-import img4 from "./img/4..jpg";
-import img5 from "./img/5..webp";
-import img6 from "./img/6..jpg";
-import img7 from "./img/7..jpg";
-import img8 from "./img/8..webp";
-import img9 from "./img/9..jpg";
-import img10 from "./img/10..jpg";
-import img11 from "./img/11..jpg";
-import img12 from "./img/12..webp";
-import img13 from "./img/13..jpg";
-import img14 from "./img/14..jpg";
-import img15 from "./img/15..webp";
-import img16 from "./img/16..jpg";
-import img17 from "./img/17..jpg";
-import img18 from "./img/18..jpg";
-import img19 from "./img/19..jpg";
-import img20 from "./img/20..jpg";
-
 const images = [
-  img1,img2,img3,img4,img5,
-  img6,img7,img8,img9,img10,
-  img11,img12,img13,img14,img15,
-  img16,img17,img18,img19,img20
+  "https://picsum.photos/id/1015/900/900",
+  "https://picsum.photos/id/1016/900/900",
+  "https://picsum.photos/id/1018/900/900",
+  "https://picsum.photos/id/1020/900/900",
+  "https://picsum.photos/id/1024/900/900",
+  "https://picsum.photos/id/1027/900/900",
+  "https://picsum.photos/id/1035/900/900",
+  "https://picsum.photos/id/1039/900/900",
+  "https://picsum.photos/id/1024/900/900",
+  "https://picsum.photos/id/1027/900/900",
+  "https://picsum.photos/id/1035/900/900",
+  "https://picsum.photos/id/1039/900/900",
+  "https://picsum.photos/id/1024/900/900",
+  "https://picsum.photos/id/1027/900/900"
 ];
 
 export default function Galerie() {
-  const [faces, setFaces] = useState([]);
+  const [active, setActive] = useState(0);
+  const [open, setOpen] = useState(false);
 
-  const randomFaces = () => {
-    const shuffled = [...images].sort(() => Math.random() - 0.5);
-    return shuffled.slice(0, 6);
-  };
+  const angleStep = 360 / images.length;
 
   useEffect(() => {
-    setFaces(randomFaces());
+    if (open) return;
 
-    const interval = setInterval(() => {
-      setFaces(randomFaces());
-    }, 3000);
+    const t = setInterval(() => {
+      setActive((p) => (p + 1) % images.length);
+    }, 2500);
 
-    return () => clearInterval(interval);
-  }, []);
-
-  if (faces.length < 6) return null;
+    return () => clearInterval(t);
+  }, [open]);
 
   return (
-    <div className="scene">
-      <div className="gallery">
+    <div className="page">
 
-        <img src={faces[0]} alt="" />
-        <img src={faces[1]} alt="" />
-        <img src={faces[2]} alt="" />
-        <img src={faces[3]} alt="" />
-        <img src={faces[4]} alt="" />
-        <img src={faces[5]} alt="" />
-
+      {/* TITLE */}
+      <div className="content">
+        <h2>FARBENSPIEL GALERIE</h2>
+        <h2>FARBENSPIEL GALERIE</h2>
       </div>
+
+      {/* 3D GALLERY */}
+      <div className="container">
+        <div className="scene">
+          <div className="ring">
+
+            {images.map((img, i) => {
+              const angle = i * angleStep - active * angleStep;
+
+              return (
+                <div
+                  key={i}
+                  className="item"
+                  onClick={() => {
+                    setActive(i);
+                    setOpen(true);
+                  }}
+                  style={{
+                    transform: `rotateY(${angle}deg) translateZ(500px)`
+                  }}
+                >
+
+                  {/* IMAGE + REFLECTION */}
+                  <div className="imgWrap">
+
+                    <img className="mainImg" src={img} alt="" />
+
+                    <div
+                      className="reflection"
+                      style={{ backgroundImage: `url(${img})` }}
+                    />
+
+                  </div>
+
+                </div>
+              );
+            })}
+
+          </div>
+        </div>
+      </div>
+
+      {/* LIGHTBOX */}
+      {open && (
+        <div className="lightbox" onClick={() => setOpen(false)}>
+
+          <button
+            className="nav left"
+            onClick={(e) => {
+              e.stopPropagation();
+              setActive((p) => (p - 1 + images.length) % images.length);
+            }}
+          >
+            ‹
+          </button>
+
+          <img
+            src={images[active]}
+            alt=""
+            onClick={(e) => e.stopPropagation()}
+          />
+
+          <button
+            className="nav right"
+            onClick={(e) => {
+              e.stopPropagation();
+              setActive((p) => (p + 1) % images.length);
+            }}
+          >
+            ›
+          </button>
+
+          <span
+            className="close"
+            onClick={(e) => {
+              e.stopPropagation();
+              setOpen(false);
+            }}
+          >
+            ×
+          </span>
+        </div>
+      )}
+
     </div>
   );
 }

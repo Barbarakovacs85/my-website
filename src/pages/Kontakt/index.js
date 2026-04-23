@@ -1,143 +1,85 @@
-import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import emailjs from "@emailjs/browser";
 import "./Kontakt.css";
+import contactImg from "./img/contact.png";
 
 function Kontakt() {
-  const [open, setOpen] = useState(false);
+  const [stars, setStars] = useState([]);
+  const [status, setStatus] = useState("");
 
-  const location = useLocation();
-  const workshop = new URLSearchParams(location.search).get("workshop");
-
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    message: ""
-  });
-
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
-
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  // 🔥 AUTOMATIKUS WORKSHOP SZÖVEG
   useEffect(() => {
-    if (workshop) {
-      setForm((prev) => ({
-        ...prev,
-        message: `Sehr geehrte Damen und Herren,
+    const generatedStars = Array.from({ length: 60 }).map(() => ({
+      top: Math.random() * 100,
+      left: Math.random() * 100,
+      delay: Math.random() * 3,
+      size: Math.random() * 2 + 1,
+    }));
+    setStars(generatedStars);
+  }, []);
 
-hiermit möchte ich mich für den Workshop "${workshop}" anmelden.
-
-Ich freue mich auf Ihre Rückmeldung.
-
-Mit freundlichen Grüßen`
-      }));
-    }
-  }, [workshop]);
-
-  const handleSubmit = async (e) => {
+  const sendEmail = (e) => {
     e.preventDefault();
 
-    setLoading(true);
-    setSuccess(false);
-
-    try {
-      const res = await fetch("/.netlify/functions/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form)
-      });
-
-      if (!res.ok) throw new Error("Hiba");
-
-      setSuccess(true);
-      setForm({ name: "", email: "", message: "" });
-
-    } catch (err) {
-      alert(err.message);
-    } finally {
-      setLoading(false);
-    }
+    emailjs
+      .sendForm(
+        "service_cccze6x",
+        "template_1defhvi",
+        e.target,
+        "3pLPDIzlzah218zM-"
+      )
+      .then(
+        () => {
+          setStatus("SUCCESS");
+          e.target.reset();
+        },
+        () => {
+          setStatus("ERROR");
+        }
+      );
   };
 
   return (
-    <div className="closet">
+    <div className="contact-page">
 
-      {!open && (
-        <div className="doors" onClick={() => setOpen(true)}>
-          <div className="door left-door"><span>Öffnen</span></div>
-          <div className="door right-door"><span>Öffnen</span></div>
-        </div>
-      )}
+      <div
+        className="background"
+        style={{ backgroundImage: `url(${contactImg})` }}
+      />
 
-      {open && (
-        <div className="inside">
+      {stars.map((star, i) => (
+        <span
+          key={i}
+          className="star"
+          style={{
+            top: `${star.top}%`,
+            left: `${star.left}%`,
+            animationDelay: `${star.delay}s`,
+            width: `${star.size}px`,
+            height: `${star.size}px`,
+          }}
+        />
+      ))}
 
-          <div className="panel left">
-            <div className="contact-info">
-              <h2>Gardrobe Widnau</h2>
-              <p>📍 Poststrasse 5<br />9443 Widnau</p>
-              <p>📞 +41 78 700 4340</p>
+      <div className="form-wrapper">
+        <form className="contact-box" onSubmit={sendEmail}>
+          <h2>Kontakt Me</h2>
+          <p>Wir freuen uns auf deine Nachricht</p>
 
-              {workshop && (
-                <p className="workshop-tag">
-                  🎨 Workshop: <b>{workshop}</b>
-                </p>
-              )}
-            </div>
-          </div>
+          <input type="text" name="name" placeholder="Name" required />
+          <input type="email" name="email" placeholder="Email" required />
+          <textarea name="message" rows="5" placeholder="Message" required />
 
-          <div className="panel center">
+          <button type="submit">Send</button>
 
-            <form onSubmit={handleSubmit}>
-              <h2>Workshop Anmeldung</h2>
+          {status === "SUCCESS" && (
+            <p style={{ color: "#0f0" }}>Message sent!</p>
+          )}
 
-              <input
-                name="name"
-                placeholder="Name"
-                value={form.name}
-                onChange={handleChange}
-                required
-              />
-
-              <input
-                name="email"
-                placeholder="Email"
-                value={form.email}
-                onChange={handleChange}
-                required
-              />
-
-              <textarea
-                name="message"
-                value={form.message}
-                onChange={handleChange}
-                required
-              />
-
-              <button type="submit" disabled={loading}>
-                {loading ? "Senden..." : "Senden"}
-              </button>
-
-              {success && (
-                <p className="success">Nachricht gesendet ✅</p>
-              )}
-
-            </form>
-
-          </div>
-
-          <div className="panel right">
-            <iframe
-              title="map"
-              src="https://www.google.com/maps?q=Poststrasse%205%2C%209443%20Widnau&output=embed"
-            />
-          </div>
-
-        </div>
-      )}
+          {status === "ERROR" && (
+            <p style={{ color: "red" }}>Error sending message.</p>
+          )}
+        </form>
+      </div>
 
     </div>
   );

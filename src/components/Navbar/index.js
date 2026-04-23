@@ -7,7 +7,7 @@ function Navbar() {
     <nav className="navbar">
       {/* BAL FELSŐ LOGÓ FELIRAT */}
       <div className="text">
-        <h1>GARDROBE</h1>
+        <h1>FARBENSPIEL</h1>
       </div>
 
       {/* JOBB OLDALI MENÜ */}
@@ -18,12 +18,12 @@ function Navbar() {
           </Link>
         </li>
         <li>
-          <Link to="/über-uns">
+          <Link to="/uber-uns">
             Über Uns<span></span>
           </Link>
         </li>
         <li>
-          <Link to="/dienstleistungen">
+          <Link to="/galerie">
             Galerie<span></span>
           </Link>
         </li>
