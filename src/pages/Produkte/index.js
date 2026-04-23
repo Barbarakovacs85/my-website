@@ -23,16 +23,19 @@ export default function ProductIndex() {
   const navigate = useNavigate();
   const timeoutRef = useRef(null);
 
+  // 👉 NEXT
   const next = () => {
     setDirection("next");
-    setIndex((prev) => (prev + 1) % slides.length);
+    setIndex((i) => (i + 1) % slides.length);
   };
 
+  // 👉 PREV (most már használva lesz!)
   const prev = () => {
     setDirection("prev");
-    setIndex((prev) => (prev - 1 + slides.length) % slides.length);
+    setIndex((i) => (i - 1 + slides.length) % slides.length);
   };
 
+  // 👉 AUTO SLIDE
   useEffect(() => {
     timeoutRef.current = setTimeout(next, 6000);
     return () => clearTimeout(timeoutRef.current);
@@ -54,6 +57,10 @@ export default function ProductIndex() {
 
       <div className="gallery">
 
+        {/* NAV BUTTONS */}
+        <button className="nav prev" onClick={prev}>‹</button>
+        <button className="nav next" onClick={next}>›</button>
+
         {/* MAIN IMAGE */}
         <div className="list">
           <div key={index} className={`slide active ${direction}`}>
@@ -69,19 +76,22 @@ export default function ProductIndex() {
               <div
                 key={i}
                 className="thumb"
-                onClick={() => setIndex((index + i) % slides.length)}
+                onClick={() => {
+                  setDirection("next");
+                  setIndex((index + i) % slides.length);
+                }}
               >
                 <img src={item.src} alt={item.title} />
               </div>
             ))}
           </div>
 
-         <button className="applyBtnSide" onClick={handleApply}>
-  <span>Workshop anmelden</span>
-  <span></span>
-  <span>Workshop anmelden</span>
-  <span></span>
-</button>
+          <button className="applyBtnSide" onClick={handleApply}>
+            <span>Workshop anmelden</span>
+            <span></span>
+            <span>Workshop anmelden</span>
+            <span></span>
+          </button>
 
         </div>
 
