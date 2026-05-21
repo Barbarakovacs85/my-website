@@ -32,7 +32,7 @@ function UberUns() {
         {/* RIGHT TEXT */}
         <div className="rightSide">
           <p>
-            Willkommen auf der Seite von Färbenspiel!
+           Herzlich  Willkommen auf der Seite von Farbenspiel!
             <br /><br />
             Ich bin Barbara, zweifache Mutter, und die Gründerin dieses Bastelgeschäfts.
             <br /><br />

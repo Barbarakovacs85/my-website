@@ -12,8 +12,9 @@ function Startseite() {
         <div className="overlay"></div>
 
         <div className="hero-text">
-          <h1>Willkommen bei Gardrobe</h1>
-          <p>Kreative workshop & Kinder Secondhand</p>
+          <h1>Herzlich Willkommen  < br/>
+            bei Farbenspiel</h1>
+          <p>Kreative Workshop & Kinder Secondhand</p>
 
           <Link to="/produkte" className="hero-3d-button">
             <span>workshop</span>

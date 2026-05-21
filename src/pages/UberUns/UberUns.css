@@ -1,4 +1,6 @@
-@import url('https://fonts.cdnfonts.com/css/beyond-the-mountains');
+@import url("https://fonts.cdnfonts.com/css/beyond-the-mountains");
+
+@import url('https://fonts.cdnfonts.com/css/fresh-banana');
 
 /* =========================
    GLOBAL
@@ -95,14 +97,24 @@ body {
 ========================= */
 
 @keyframes rainbowFlow {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 @keyframes rainbowMove {
-  0% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 /* =========================
@@ -143,7 +155,7 @@ body {
   opacity: 0;
   transition: all 1s ease;
 
-  filter: drop-shadow(0 0 25px rgba(255,255,255,0.2));
+  filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.2));
 }
 
 .leftSide img {
@@ -170,7 +182,7 @@ body {
 }
 
 .rightSide p {
-  font-family: 'Beyond The Mountains', sans-serif;
+  font-family: "Beyond The Mountains", sans-serif;
   font-size: 2.2rem;
   line-height: 1.2;
   color: #f1f1f1;
@@ -190,23 +202,71 @@ body {
   opacity: 1;
 }
 
-/* =========================
-   RESPONSIVE
-========================= */
-
 @media (max-width: 768px) {
-  .aboutContainer {
-    flex-direction: column;
+  /* =========================
+     PAGE SCROLL ENGEDÉLY
+  ========================= */
+
+  .aboutPage {
+    overflow-y: auto; /* 👈 scroll mobilon */
+  }
+
+  /* =========================
+     TITLE
+  ========================= */
+
+  .title {
+    font-size: 3rem;
+    margin-bottom: 10px;
     text-align: center;
   }
 
-  .leftSide,
-  .rightSide {
-    transform: translateY(60px);
+  /* =========================
+     CONTAINER: COLUMN LAYOUT
+  ========================= */
+
+  .aboutContainer {
+    display: flex;
+    flex-direction: column; /* 👈 EZ A LÉNYEG */
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    text-align: center;
   }
 
-  .aboutContainer.show .leftSide,
-  .aboutContainer.show .rightSide {
-    transform: translateY(0);
+  /* =========================
+     TEXT FIRST
+  ========================= */
+
+  .rightSide {
+    order: 1; /* 👈 szöveg felül */
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+  .rightSide p {
+    font-size: 1.8rem;
+    font-family:'times new roman', serif;
+    line-height: 1.3;
+    margin: 0;
+  }
+
+  /* =========================
+     IMAGE SECOND
+  ========================= */
+
+  .leftSide {
+    order: 2; /* 👈 kép alul */
+    transform: translateX(0);
+    opacity: 1;
+
+    display: flex;
+    justify-content: center;
+  }
+
+  .leftSide img {
+    width: 90%;
+    max-width: 350px;
+    border-radius: 15px;
   }
 }
